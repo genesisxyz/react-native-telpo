@@ -17,6 +17,65 @@ const Telpo = NativeModules.Telpo
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return Telpo.multiply(a, b);
+export enum Status {
+  STATUS_OK = 0,
+  STATUS_NO_PAPER,
+  STATUS_OVER_HEAT,
+  STATUS_OVER_FLOW,
+  STATUS_UNKNOWN,
+  STATUS_ERROR = 16,
+}
+
+export enum Mode {
+  ALGIN_LEFT = 0,
+  ALGIN_MIDDLE,
+  ALGIN_RIGHT,
+}
+
+export async function checkStatus(): Promise<Status> {
+  return await Telpo.checkStatus();
+}
+
+export function start(mode: number) {
+  return Telpo.start(mode);
+}
+
+export function setGrey(level: number) {
+  return Telpo.setGrey(level);
+}
+
+export function setLineSpace(lineSpace: number) {
+  return Telpo.setLineSpace(lineSpace);
+}
+
+export function setBold(isBold: boolean) {
+  return Telpo.setBold(isBold);
+}
+
+export function setAlgin(mode: Mode) {
+  return Telpo.setAlgin(mode);
+}
+
+export function setTextSize(size: number) {
+  return Telpo.setTextSize(size);
+}
+
+export function addString(content: string) {
+  return Telpo.addString(content);
+}
+
+export function printString() {
+  return Telpo.printString();
+}
+
+export function walkPaper(line: number) {
+  return Telpo.walkPaper(line);
+}
+
+export function printLogo(image: string, isBuffer: boolean = false) {
+  return Telpo.printLogo(image, isBuffer);
+}
+
+export function stop() {
+  return Telpo.stop();
 }

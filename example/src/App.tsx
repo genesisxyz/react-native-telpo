@@ -1,18 +1,38 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-telpo';
+import { StyleSheet, View, Button } from 'react-native';
+import * as Telpo from 'react-native-telpo';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+  const test = async () => {
+    let status = await Telpo.checkStatus();
+    if (status === Telpo.Status.STATUS_OK) {
+      Telpo.start(0);
+      Telpo.setGrey(6);
+      Telpo.setLineSpace(5);
+      Telpo.setBold(true);
+      Telpo.setAlgin(Telpo.Mode.ALGIN_MIDDLE);
+      status = await Telpo.checkStatus();
+      if (
+        status === Telpo.Status.STATUS_NO_PAPER ||
+        status === Telpo.Status.STATUS_ERROR
+      ) {
+        console.warn('No paper');
+        Telpo.stop();
+      } else if (status === Telpo.Status.STATUS_OVER_HEAT) {
+        console.warn('Too hot');
+        Telpo.stop();
+      }
+      Telpo.setTextSize(22);
+      Telpo.addString('Hello World');
+      Telpo.printString();
+      Telpo.stop();
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Button title="PRINT" onPress={test} />
     </View>
   );
 }
